@@ -30,7 +30,7 @@ class spider():
         self.datapage = 'http://data.cma.cn/dataService/index/datacode/A.0029.0001.html'
         self.datapage1 = 'http://data.cma.cn/dataService/ajax.html'
         self.formdata1 = {'act':'getStationsByProvinceID','provinceID':'num','dataCode':'A.0029.0001'}
-        self.filepath = 'c:/code/weather/data/'
+        self.filepath = 'c:/github/weat/data/'
         
     def getopener(self,head):
         cj = http.cookiejar.CookieJar()
@@ -120,7 +120,7 @@ class spider():
            
                     
 a = spider()
-f = a.getplacedata()
+f = a.getweather()
 
 
                     
