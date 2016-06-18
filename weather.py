@@ -2,7 +2,7 @@
 """
 Created on Tue Jun 14 17:30:37 2016
 
-@author: Administrator
+@author: luokai
 """
 
 import urllib
@@ -101,7 +101,7 @@ class spider():
             print('保存第', i+1, '个')
         return jsonfilelist
         
-    def processjsonfile(self):    #读取保存的地区json文件，生成一个地区详情的df
+    def processjsonfile(self):    #读取保存的地区json文件，生成合并地区详情df
         file_list = self.savejsonfile()
         dflist = []
         for i in file_list:
@@ -136,15 +136,40 @@ class spider():
         pathlist = self.getfilename()
         dflist = []
         for i,file in enumerate(pathlist):
-            onedf = self.readzip(file,1)
-            dflist.append(onedf)
-            print('读取第',i+1,'个表格')
+            try:
+                self.readzip(file,1)
+                onedf = self.readzip(file,1)
+                dflist.append(onedf)
+                print('读取到一个表格')
+            except:
+                continue
         alldf = pd.concat(dflist)
         return alldf
+        
+    def getvaluename(self):
+        pathlist = self.getfilename()
+        for i,file in enumerate(pathlist):
+            try:
+                self.readzip(file,0)
+                valuenamedf = self.readzip(file,0)
+                print('读取到一个表格')
+                break
+            except:
+                continue
+        return valuenamedf
+        
+    def savealldata(self):
+        placedf = self.processjsonfile()
+        weatherdf = self.getweather()
+        valuenamedf = self.getvaluename()
+        placedf.to_hdf('data.h5','place')
+        weatherdf.to_hdf('data.h5','weather')
+        valuenamedf.to_hdf('data.h5','valuename')
+        return
            
                     
 a = spider()
-df = a.processjsonfile()
+a.savealldata()
 
 
                     
